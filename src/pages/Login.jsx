@@ -1,208 +1,144 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  CssBaseline,
-  FormControlLabel,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import HttpsIcon from "@mui/icons-material/Https";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import LoginIcon from "@mui/icons-material/Login";
-import { AccountCircle } from "@mui/icons-material";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useState } from "react";
-import propTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-
-const schema = yup.object({
-  email: yup
-    .string()
-    .email("Email format is not valid")
-    .required("Email is required"),
-  password: yup.string().required("Password is required"),
-});
+/* eslint-disable no-unused-vars */
+import { useEffect, useRef, useState } from "react";
+import Input from "../components/Input";
+import { FaFacebookSquare } from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Formik, Form } from "formik";
+// import { useDispatch } from "react-redux";
+// import {userActions} from "../store/user/userSlice"
+import { LoginSchema } from "../validation/index";
+import { login } from "../firebase.js";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
-  const [progress, setProgress] = useState(false);
+    const navigate = useNavigate();
+    // const dispatch = useDispatch();
+    const location = useLocation();
+    const ref = useRef();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+    useEffect(() => {
+        let images = ref.current.querySelectorAll("img"),
+            total = images.length,
+            current = 0;
+        const imageSlider = () => {
+            images.forEach((image, index) => {
+                if (index === current) {
+                    image.classList.remove("opacity-0");
+                } else {
+                    image.classList.add("opacity-0");
+                }
+            });
+            current = (current + 1) % total;
+        };
+        imageSlider(); // İlk sefer için çalıştır
 
-  const onSubmit = async (data) => {
-    try {
-      setProgress(true);
-  
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      };
-  
-      const response = await fetch("https://jsonplaceholder.typicode.com/posts", requestOptions);
-      const responseData = await response.json();
-      console.log(responseData);
+        let interval = setInterval(imageSlider, 3000);
 
-      setProgress(false);
-  
-      navigate("/");
-    } catch (error) {
-      setProgress(false);
-      console.error("error:", error.message);
-    }
-  };
-  
-  const EndAdorment = ({ visible, setVisible }) => {
+        return () => clearInterval(interval);
+    }, [ref]);
+
+    const submitHandle = async (values) => {
+        console.log("values", values);
+        await login(values.username, values.password); //validatei ekle formiğe orası hatalı
+        // dispatch(userActions.setUser({userName}));
+        navigate(location.state?.return_url || "/", { replace: true });
+    };
+
     return (
-      <InputAdornment position="end">
-        <IconButton
-          aria-label="toggle password visibility"
-          onClick={() => setVisible(!visible)}
-          onMouseDown={(e) => e.preventDefault()}
-        >
-          {visible ? (
-            <VisibilityIcon color="secondary" />
-          ) : (
-            <VisibilityOffIcon />
-          )}
-        </IconButton>
-      </InputAdornment>
-    );
-  };
+        <div className="w-full h-full flex items-center gap-x-8  justify-center ">
+            <div
+                className="hidden md:block w-[380px] h-[581px] relative bg-logo-pattern "
+                style={{ backgroundSize: "468.32px 634.15px", backgroundPosition: "-46px 0px" }}
+            >
+                <div className="w-[250px] h-[538px] absolute top-[27px] right-[18px]" ref={ref}>
+                    <img
+                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
+                        src="../../public/images/screenshot1.png"
+                        alt="Instagram screenshot 2"
+                    />
+                    <img
+                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
+                        src="../public/images/screenshot2.png"
+                        alt="Instagram screenshot 2"
+                    />
+                    <img
+                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
+                        src="../../public/images/screenshot3.png"
+                        alt="Instagram screenshot 3"
+                    />
+                    <img
+                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
+                        src="../public/images/screenshot4.png"
+                        alt="Instagram screenshot 4"
+                    />
+                </div>
+            </div>
+            <div className="w-[350px] grid gap-y-3">
+                <div className=" bg-white border p-[40px] pt-8 pb-6">
+                    <a className="flex justify-center mb-8" href="">
+                        <img className="h-[51px]" src="../public/images/instagramlogin.png" />
+                    </a>
+                    <Formik
+                        initialValues={{ username: "", password: "" }}
+                        onSubmit={submitHandle}
+                        // validationSchema={LoginSchema}
+                    >
+                        {({ isSubmitting, values, isValid, dirty }) => (
+                            <Form className="grid gap-y-1.5">
+                                <Input
+                                    // required={true}
+                                    type="text"
+                                    label={"Username or email"}
+                                    show={true}
+                                    name="username"
+                                />
+                                <Input
+                                    // required={true}
+                                    type="password"
+                                    show={false}
+                                    label={" Password"}
+                                    name="password"
+                                />
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login Form
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          sx={{ mt: 1 }}
-        >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            variant="outlined"
-            id="email"
-            name="email"
-            label="Email Address"
-            type="email"
-            autoComplete="email"
-            autoFocus
-            color="secondary"
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors?.email?.message}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle color="secondary" />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            variant="outlined"
-            id="password"
-            name="password"
-            label="Password"
-            type={visible ? "text" : "password"}
-            autoComplete="current-password"
-            color="secondary"
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors?.password?.message}
-            InputProps={{
-              endAdornment: (
-                <EndAdorment visible={visible} setVisible={setVisible} />
-              ),
-              startAdornment: (
-                <InputAdornment position="start">
-                  <HttpsIcon color="secondary" />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="secondary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            color="secondary"
-            startIcon={
-              progress ? (
-                <CircularProgress color="inherit" size={"16px"} />
-              ) : (
-                <LoginIcon />
-              )
-            }
-          >
-            Login
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"You don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-    </Container>
-  );
+                                <button
+                                    disabled={!isValid || !dirty}
+                                    type="submit"
+                                    className="h-[30px] rounded bg-brand mt-1 font-semibold text-white text-sm disabled-opacity-50"
+                                >
+                                    Log In
+                                </button>
+                                <div className="flex items-center my-2">
+                                    <div className="h-px bg-gray-300 flex-1" />
+                                    <span className="px-4 text-[13px] text-gray-500 font-semibold">
+                                        OR
+                                    </span>
+                                    <div className="h-px bg-gray-300 flex-1" />
+                                </div>
+                                <a
+                                    href="#"
+                                    className="flex items-center mb-2 justify-center gap-x-2 h-[30px] rounded text-facebook text-sm"
+                                >
+                                    <FaFacebookSquare size={20} />
+                                    Log in with Facebook
+                                </a>
+                                <a
+                                    href="#"
+                                    className="flex items-center justify-center text-link text-xs"
+                                >
+                                    Forgot Password?
+                                </a>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className=" bg-white border p-4 text-sm text-center">
+                    Do not have an account?{" "}
+                    <a href="#" className="font-semibold text-brand">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Login;
-
-Login.propTypes = {
-  visible: propTypes.bool,
-  setVisible: propTypes.func,
-};
