@@ -7,9 +7,8 @@ export default function PrivateRoutes() {
     const location = useLocation(); 
     const outlet = useOutlet();
  
-    if (!user) {
-        console.log("user is logged out");
-        return (
+    if (user === null || user?.data === null || !user) {
+        return ( 
             <Navigate
                 to="/auth/login"
                 replace={true}

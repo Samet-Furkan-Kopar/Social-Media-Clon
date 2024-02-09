@@ -3,7 +3,7 @@ import { store } from "../store/store.js";
 import { userActions } from "../store/user/userSlice.js";
 
 export const userHandle = (data) => {
-    // let user = data ? true : false;
+    
     store.dispatch(userActions.setUser({ data }));
 };
 

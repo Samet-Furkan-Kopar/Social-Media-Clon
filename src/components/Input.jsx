@@ -8,6 +8,7 @@ import classNames from "classnames";
 export default function Input({ label, ...props }) {
     // const inputRef = useRef();
     const [show, setShow] = useState(props?.show || false);
+    console.log("props", props);
     const [type, setType] = useState(props?.type || "text");
     // eslint-disable-next-line no-unused-vars
     const [field, meta, helpers] = useField(props);
@@ -25,12 +26,12 @@ export default function Input({ label, ...props }) {
         <label className=" relative flex bg-zinc-50 border rounded-sm focus:within focus:border-gray-400">
             <input
                 className={classNames({
-                    " px-2  outline-none text-xs  w-full h-[38px] ": true,
+                    " px-2  outline-none text-xs bg-tranparent w-full h-[38px] ": true,
                     "pt-[10px]": field?.value,
                 })}
                 {...field}
                 {...props}
-                type={type ? type : props?.type}
+                type={type }
             />
             <small
                 className={classNames({

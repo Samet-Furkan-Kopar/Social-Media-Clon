@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Search from "./Search";
+import avatar from "../../public/images/avatar.jpg";
 import {logout} from "../firebase"
+import Icon from "./Icon";
 const Header = () => {
     return (
         <header className="bg-white border-b border-gray-300">
@@ -13,9 +15,27 @@ const Header = () => {
                     />
                 </Link>
                 <Search />
-                <nav>
+                <nav className="flex items-center gap-x-6">
+                    <NavLink to={"/"}>
+                        <Icon name="home" size={24}/>
+                    </NavLink>
+                    <NavLink to={"/"}>
+                        <Icon name="direct" size={24}/>
+                    </NavLink>
+                    <NavLink to={"/"}>
+                        <Icon name="explore" size={24}/>
+                    </NavLink>
+                    <NavLink to={"/"}>
+                        <Icon name="new" size={24}/>
+                    </NavLink>
+                    <NavLink to={"/"}>
+                        <Icon name="hearth" size={24}/>
+                    </NavLink>
+                    
+
                     <button onClick={logout}>
-                        Log Out
+                        <img src={avatar} className="h-6 w-6 rounded-full" alt="Log Out"/>
+                        
                     </button>
                 </nav>
 

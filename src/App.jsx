@@ -1,28 +1,33 @@
 import { Route, Routes } from "react-router-dom";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Deneme from "./pages/Deneme";
 import AuthLayout from "./pages/auth/Index";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import { Toaster } from "react-hot-toast";
-// import { useSelector } from "react-redux";
-// import Loader from "./components/Loader";
+import { useSelector } from "react-redux";
+import Loader from "./components/Loader";
 
 const App = () => {
-    // const [redirect, setRedirect] = useState(false);
-    // // const user = useSelector((state) => state.auth.user);
+    const [redirect, setRedirect] = useState(true);
+    const user = useSelector((state) => state.auth.user);
+    console.log(user);
+        useEffect(() => {
+            let timeOut = setTimeout(() => {
+                setRedirect(false);
+            }, 1000);
+            return () => {
+                clearTimeout(timeOut);
+            };
+        }, []);
 
-    // useEffect(() => {
-    //     let timeOut = setTimeout(() => {
-    //         setRedirect(true);
-    //     }, 2000);
-    //     return () => clearTimeout(timeOut);
-    // }, []);
-
-    // if (!redirect) {
-    //     return <Loader />;
-    // }
+    if (redirect && (user === null || user?.data === null)) {
+        return (
+        <Loader />
+        );
+    }
 
     return (
         <>
@@ -35,6 +40,7 @@ const App = () => {
 
                 <Route path="/auth" element={<AuthLayout />}>
                     <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
                 </Route>
             </Routes>
         </>

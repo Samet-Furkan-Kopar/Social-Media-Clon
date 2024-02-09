@@ -1,19 +1,39 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import { FaFacebookSquare } from "react-icons/fa";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Formik, Form } from "formik";
+import Button from "../../components/Button";
+import Seperator from "../../components/Separator";
 // import { useDispatch } from "react-redux";
 // import {userActions} from "../store/user/userSlice"
-import { LoginSchema } from "../validation/index";
-import { login } from "../firebase.js";
-
+import { useSelector } from "react-redux";
+// import { LoginSchema } from "../validation/index";
+import { login } from "../../firebase.js";
+import * as yup from "yup";
+import classNames from "classnames";
+import Loader from "../../components/Loader";
 const Login = () => {
     const navigate = useNavigate();
     // const dispatch = useDispatch();
     const location = useLocation();
     const ref = useRef();
+    const user = useSelector((state) => state.auth.user);
+
+    // const schema = yup.object({
+    //     username: yup.string().required("Email Formatı Uygun Değil"),
+    //     password: yup.string().required("Şifre gerekli*"),
+    // });
+    useEffect(() => {
+        if (user && user?.data !== null) {
+            // Kullanıcı mevcut ve kullanıcı verisi null değilse, yönlendir
+            navigate("/", { replace: true });
+        } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+   
+   
 
     useEffect(() => {
         let images = ref.current.querySelectorAll("img"),
@@ -37,12 +57,18 @@ const Login = () => {
     }, [ref]);
 
     const submitHandle = async (values) => {
-        console.log("values", values);
-        await login(values.username, values.password); //validatei ekle formiğe orası hatalı
+        //validatei ekle formiğe orası hatalı
         // dispatch(userActions.setUser({userName}));
-        navigate(location.state?.return_url || "/", { replace: true });
+        const response = await login(values?.username, values?.password);
+        console.log(response, "response");
+        if (response) {
+            setTimeout(() => {
+                navigate(location.state?.return_url || "/", { replace: true });
+            }, 2000);
+        }
     };
 
+    const images = ["screenshot1.png", "screenshot2.png", "screenshot3.png", "screenshot4.png"];
     return (
         <div className="w-full h-full flex items-center gap-x-8  justify-center ">
             <div
@@ -50,26 +76,17 @@ const Login = () => {
                 style={{ backgroundSize: "468.32px 634.15px", backgroundPosition: "-46px 0px" }}
             >
                 <div className="w-[250px] h-[538px] absolute top-[27px] right-[18px]" ref={ref}>
-                    <img
-                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
-                        src="../../public/images/screenshot1.png"
-                        alt="Instagram screenshot 2"
-                    />
-                    <img
-                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
-                        src="../public/images/screenshot2.png"
-                        alt="Instagram screenshot 2"
-                    />
-                    <img
-                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
-                        src="../../public/images/screenshot3.png"
-                        alt="Instagram screenshot 3"
-                    />
-                    <img
-                        className="h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear"
-                        src="../public/images/screenshot4.png"
-                        alt="Instagram screenshot 4"
-                    />
+                    {images.map((image, index) => (
+                        <img
+                            key={index}
+                            className={classNames({
+                                "h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear": true,
+                                "opacity-100": index === 0,
+                            })}
+                            src={`../../public/images/${image}`}
+                            alt={`Instagram screenshot ${index + 1}`}
+                        />
+                    ))}
                 </div>
             </div>
             <div className="w-[350px] grid gap-y-3">
@@ -80,39 +97,41 @@ const Login = () => {
                     <Formik
                         initialValues={{ username: "", password: "" }}
                         onSubmit={submitHandle}
-                        // validationSchema={LoginSchema}
+                        // validationSchema={schema}
                     >
                         {({ isSubmitting, values, isValid, dirty }) => (
                             <Form className="grid gap-y-1.5">
                                 <Input
-                                    // required={true}
+                                    required={true}
                                     type="text"
                                     label={"Username or email"}
                                     show={true}
                                     name="username"
                                 />
                                 <Input
-                                    // required={true}
+                                    required={true}
                                     type="password"
                                     show={false}
                                     label={" Password"}
                                     name="password"
                                 />
 
-                                <button
-                                    disabled={!isValid || !dirty}
+                                {/* <button
+                                    //  disabled={values?.username === "" || values?.password === "" ? true : false}
+                                    disabled={isSubmitting || !isValid || !dirty}
                                     type="submit"
-                                    className="h-[30px] rounded bg-brand mt-1 font-semibold text-white text-sm disabled-opacity-50"
-                                >
+                                    // className="h-[30px] rounded bg-brand mt-1 font-semibold text-white text-sm disabled-opacity-50"
+                                    className={classNames({
+                                        "h-[30px] rounded bg-brand mt-1 font-semibold text-white text-sm disabled-opacity-50 ": true,
+                                        "disabled": isSubmitting, //field.value yani değer varsa yukarı çıkar
+                                    })}
+                               >
                                     Log In
-                                </button>
-                                <div className="flex items-center my-2">
-                                    <div className="h-px bg-gray-300 flex-1" />
-                                    <span className="px-4 text-[13px] text-gray-500 font-semibold">
-                                        OR
-                                    </span>
-                                    <div className="h-px bg-gray-300 flex-1" />
-                                </div>
+                                </button> */}
+                                <Button disabled={isSubmitting || !isValid || !dirty} type="submit">
+                                    Log In
+                                </Button>
+                                <Seperator label="OR" />
                                 <a
                                     href="#"
                                     className="flex items-center mb-2 justify-center gap-x-2 h-[30px] rounded text-facebook text-sm"
@@ -132,9 +151,9 @@ const Login = () => {
                 </div>
                 <div className=" bg-white border p-4 text-sm text-center">
                     Do not have an account?{" "}
-                    <a href="#" className="font-semibold text-brand">
+                    <Link to={"/auth/register"} className="font-semibold text-brand">
                         Sign up
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
