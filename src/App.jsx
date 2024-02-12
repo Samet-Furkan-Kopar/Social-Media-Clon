@@ -15,10 +15,11 @@ import Tagged from "./pages/profile/components/Tagged";
 import ProfileLayout from "./pages/profile";
 import InboxLayout from "./pages/inbox";
 import Inbox from "./pages/inbox/Inbox";
+import Chat from "./pages/inbox/chat/Index";
 const App = () => {
     const [redirect, setRedirect] = useState(true);
     const user = useSelector((state) => state.auth.user);
-    console.log(user);
+    // console.log(user);
     useEffect(() => {
         let timeOut = setTimeout(() => {
             setRedirect(false);
@@ -41,7 +42,7 @@ const App = () => {
                         <Route index element={<Home />} />
                         <Route path="inbox" element={<InboxLayout />}>
                             <Route index element={<Inbox />} />
-                            {/* <Route path="tagged" element={<Tagged />} /> */}
+                            <Route path=":conversationId" element={<Chat />} />
                         </Route>
 
                         <Route path=":username" element={<ProfileLayout />}>

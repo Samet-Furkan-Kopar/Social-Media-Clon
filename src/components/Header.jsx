@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import { Link, NavLink } from "react-router-dom";
 import Search from "./Search";
 import avatar from "../../public/images/avatar.jpg";
-// import {logout} from "../firebase"
+import {logout} from "../firebase"
 import Icon from "./Icon";
 import { useSelector } from "react-redux";
+import { IoMdExit } from "react-icons/io";
 
 const Header = () => {
     const user = useSelector((state) => state.auth.user);
@@ -21,10 +24,13 @@ console.log(user);
                 <Search />
                 <nav className="flex items-center gap-x-6">
                     <NavLink to={"/"}>
-                        <Icon name="home" size={24}/>
+                    {({isActive}) => isActive ? <Icon name="home-filled" size={24}/> :<Icon name="home" size={24}/>}
+
+                        
                     </NavLink>
-                    <NavLink to={"/inbox"}>
-                        <Icon name="direct" size={24}/>
+                    <NavLink to={"/inbox"} >
+                        {({isActive}) => isActive ? <Icon name="direct-filled" size={24}/> :<Icon name="direct" size={24}/>}
+                        
                     </NavLink>
                     <NavLink to={"/"}>
                         <Icon name="explore" size={24}/>
@@ -35,10 +41,11 @@ console.log(user);
                     <NavLink to={"/"}>
                         <Icon name="hearth" size={24}/>
                     </NavLink>
-                    
-
                     <NavLink to={`/${user?.data?.username}`}>
                         <img src={avatar} className="h-6 w-6 rounded-full" alt="Log Out"/>
+                    </NavLink>
+                    <NavLink to={"/"}>
+                    <IoMdExit onClick={logout} size={24}/>
                     </NavLink>
                 </nav>
 

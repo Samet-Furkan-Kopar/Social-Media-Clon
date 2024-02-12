@@ -42,13 +42,15 @@ const db = getFirestore(app);
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const dbUser = await getDoc(doc(db, "users", user.uid));
+        console.log(dbUser,"wwwww");
         let data = {
-            uid: dbUser.uid,
-            full_name: dbUser.displayName,
-            email: dbUser.email,
-            emailVerified: dbUser.emailVerified,
+            uid: user.uid,
+            full_name: user.displayName,
+            email: user.email,
+            emailVerified: user.emailVerified,
             ...dbUser.data(),
         };
+
         userHandle(data);
     } else {
         userHandle(null);
@@ -73,9 +75,9 @@ export const register = async ({ email, password, full_name, username }) => {
             toast.error("Username already taken");
         } else {
             const response = await createUserWithEmailAndPassword(auth, email, password);
-            if (response.user) {
+            if (response?.user) {
                 await setDoc(doc(db, "usernames", username), {
-                    user_id: response.user.uid,
+                    user_id: response?.user.uid,
                 });
 
                 await setDoc(doc(db, "users", response.user.uid), {
@@ -115,7 +117,7 @@ export const getUserInfo = async (name) => {
         return (await getDoc(doc(db, "users", username.data().user_id))).data();
     }
     else {
-        toast.error("Kullanıcı bı-ulunamadı");
+        toast.error("Kullanıcı bulunamadı");
         throw new Error("Kullanıcı bulunamadı");
     }
 }
