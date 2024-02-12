@@ -12,6 +12,7 @@ import Seperator from "../../components/Separator";
 import { register } from "../../firebase.js";
 import * as yup from "yup";
 import classNames from "classnames";
+import { Helmet } from "react-helmet";
 
 const Register = () => {
     // const schema = yup.object({
@@ -41,6 +42,9 @@ const Register = () => {
     return (
      
             <div className="w-[350px] grid gap-y-3">
+                <Helmet>
+                    <title>Sign Up • Instagram</title>
+                </Helmet>
                 <div className=" bg-white border p-[40px] pt-8 pb-6">
                     <a className="flex justify-center mb-8" href="">
                         <img className="h-[51px]" src="../public/images/instagramlogin.png" />

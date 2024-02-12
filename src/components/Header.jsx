@@ -1,9 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import Search from "./Search";
 import avatar from "../../public/images/avatar.jpg";
-import {logout} from "../firebase"
+// import {logout} from "../firebase"
 import Icon from "./Icon";
+import { useSelector } from "react-redux";
+
 const Header = () => {
+    const user = useSelector((state) => state.auth.user);
+console.log(user);
     return (
         <header className="bg-white border-b border-gray-300">
             <div className="h-[60px] flex items-center justify-between container mx-auto">
@@ -19,7 +23,7 @@ const Header = () => {
                     <NavLink to={"/"}>
                         <Icon name="home" size={24}/>
                     </NavLink>
-                    <NavLink to={"/"}>
+                    <NavLink to={"/inbox"}>
                         <Icon name="direct" size={24}/>
                     </NavLink>
                     <NavLink to={"/"}>
@@ -33,10 +37,9 @@ const Header = () => {
                     </NavLink>
                     
 
-                    <button onClick={logout}>
+                    <NavLink to={`/${user?.data?.username}`}>
                         <img src={avatar} className="h-6 w-6 rounded-full" alt="Log Out"/>
-                        
-                    </button>
+                    </NavLink>
                 </nav>
 
             </div>

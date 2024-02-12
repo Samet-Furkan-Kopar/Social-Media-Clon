@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import toast from "react-hot-toast";
 import { userHandle, clearState } from "./utils/authStore";
-import { getFirestore, getDoc,setDoc,doc } from "firebase/firestore";
+import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // const firebaseConfig = {
@@ -40,20 +40,17 @@ const auth = getAuth();
 // eslint-disable-next-line no-unused-vars
 const db = getFirestore(app);
 onAuthStateChanged(auth, async (user) => {
-    if(user)
-    {
+    if (user) {
         const dbUser = await getDoc(doc(db, "users", user.uid));
-        let data ={
+        let data = {
             uid: dbUser.uid,
             full_name: dbUser.displayName,
             email: dbUser.email,
             emailVerified: dbUser.emailVerified,
-            ...dbUser.data()
-        }
+            ...dbUser.data(),
+        };
         userHandle(data);
-    }
-    else
-    {
+    } else {
         userHandle(null);
     }
     // userHandle(user ? user : null);
@@ -71,16 +68,14 @@ export const login = async (email, password) => {
 // eslint-disable-next-line no-unused-vars
 export const register = async ({ email, password, full_name, username }) => {
     try {
-        const user = await getDoc(doc(db, "users", username));
+        const user = await getDoc(doc(db, "usernames", username));
         if (user.exists()) {
             toast.error("Username already taken");
-            
         } else {
             const response = await createUserWithEmailAndPassword(auth, email, password);
-
             if (response.user) {
-                await setDoc(doc(db, "users", username), {
-                    uid: response.user.uid,
+                await setDoc(doc(db, "usernames", username), {
+                    user_id: response.user.uid,
                 });
 
                 await setDoc(doc(db, "users", response.user.uid), {
@@ -89,19 +84,15 @@ export const register = async ({ email, password, full_name, username }) => {
                     followers: [],
                     following: [],
                     notifications: [],
-                    website:"",
-                    bio:"",
-                    phoneNumber:"",
-                    gender:"",
-                    post:0,
+                    website: "",
+                    bio: "",
+                    phoneNumber: "",
+                    gender: "",
+                    post: 0,
                 });
-
             }
             return response;
-            
         }
-        
-        
     } catch (error) {
         toast.error(error.code);
     }
@@ -115,3 +106,16 @@ export const logout = async () => {
         toast.error(error.code);
     }
 };
+
+export const getUserInfo = async (name) => {
+    console.log(name, "name");
+    const username = await getDoc(doc(db, "usernames", name));
+    console.log(username, "username");
+    if(username.exists()){
+        return (await getDoc(doc(db, "users", username.data().user_id))).data();
+    }
+    else {
+        toast.error("Kullanıcı bı-ulunamadı");
+        throw new Error("Kullanıcı bulunamadı");
+    }
+}

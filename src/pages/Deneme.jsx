@@ -1,10 +1,12 @@
-
+import { useEffect } from "react"
+import {logout} from "../firebase"
 const Deneme = () => {
-  return (
-    <div>
-      dwawdawdwadwawawdawd
-    </div>
-  )
+  console.log("deneme");
+  useEffect(() => {
+    logout()
+  }
+  , [])
+  return null
 }
 
 export default Deneme

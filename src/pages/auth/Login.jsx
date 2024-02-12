@@ -14,6 +14,7 @@ import { login } from "../../firebase.js";
 import * as yup from "yup";
 import classNames from "classnames";
 import Loader from "../../components/Loader";
+import { Helmet } from "react-helmet";
 const Login = () => {
     const navigate = useNavigate();
     // const dispatch = useDispatch();
@@ -71,6 +72,9 @@ const Login = () => {
     const images = ["screenshot1.png", "screenshot2.png", "screenshot3.png", "screenshot4.png"];
     return (
         <div className="w-full h-full flex items-center gap-x-8  justify-center ">
+            <Helmet>
+                <title>Log In • Instagram</title>
+            </Helmet>
             <div
                 className="hidden md:block w-[380px] h-[581px] relative bg-logo-pattern "
                 style={{ backgroundSize: "468.32px 634.15px", backgroundPosition: "-46px 0px" }}
