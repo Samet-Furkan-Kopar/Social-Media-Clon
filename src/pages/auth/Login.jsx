@@ -27,7 +27,7 @@ console.log(user) ;
     //     password: yup.string().required("Şifre gerekli*"),
     // });
     useEffect(() => {
-        if (user && user?.data !== null) {
+        if (user && user?.data !== null && user !==null) {
             // Kullanıcı mevcut ve kullanıcı verisi null değilse, yönlendir
             navigate("/", { replace: true });
         } 
@@ -87,7 +87,7 @@ console.log(user) ;
                                 "h-full w-full absolute top-0 left-0 opacity-0 transition-opacity duration-700 ease-linear": true,
                                 "opacity-100": index === 0,
                             })}
-                            src={`../../public/images/${image}`}
+                            src={`/images/${image}`}
                             alt={`Instagram screenshot ${index + 1}`}
                         />
                     ))}
@@ -96,7 +96,7 @@ console.log(user) ;
             <div className="w-[350px] grid gap-y-3">
                 <div className=" bg-white border p-[40px] pt-8 pb-6">
                     <a className="flex justify-center mb-8" href="">
-                        <img className="h-[51px]" src="../public/images/instagramlogin.png" />
+                        <img className="h-[51px]" src="/images/instagramlogin.png" />
                     </a>
                     <Formik
                         initialValues={{ username: "", password: "" }}

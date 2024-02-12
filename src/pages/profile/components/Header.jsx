@@ -5,7 +5,7 @@ const Header = ({user}) => {
   console.log(user && user);
   return (
     <header className="flex items-center justify-center mt-6 px-24 gap-x-24 py-4">
-      <img src={"../../../../public/images/avatar.jpg"} className="w-[150px] h-[150px] rounded-full"/>
+      <img src={"/images/avatar.jpg"} className="w-[150px] h-[150px] rounded-full"/>
       <div className="">
      <div className="mb-6 ">
      <h1  className="text-[28px] font-light">{user?.username}</h1>

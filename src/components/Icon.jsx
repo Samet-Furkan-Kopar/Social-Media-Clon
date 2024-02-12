@@ -5,7 +5,7 @@ const Icon = ({ name, size = 16, ...props }) => {
     return (
         <>
             <SVG
-                src={`../../public/icons/${name}.svg`}
+                src={`/icons/${name}.svg`}
                 width={size}
                 height={size}
                 //  preProcessor={(code)=> code.replace(/fill=".*?"/g, 'fill = "currentColor"')}

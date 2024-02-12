@@ -17,7 +17,7 @@ console.log(user);
                 <Link to="/">
                     <img
                         className="h-[29px]"
-                        src="../../public/images/instagramlogin.png"
+                        src="/images/instagramlogin.png"
                         alt="Instagram"
                     />
                 </Link>

@@ -47,6 +47,7 @@ onAuthStateChanged(auth, async (user) => {
             uid: user.uid,
             full_name: user.displayName,
             email: user.email,
+            username: dbUser.data().username,
             emailVerified: user.emailVerified,
             ...dbUser.data(),
         };
@@ -97,6 +98,7 @@ export const register = async ({ email, password, full_name, username }) => {
         }
     } catch (error) {
         toast.error(error.code);
+        throw new Error(error);
     }
 };
 export const logout = async () => {

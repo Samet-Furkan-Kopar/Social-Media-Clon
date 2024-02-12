@@ -8,7 +8,6 @@ import classNames from "classnames";
 export default function Input({ label, ...props }) {
     // const inputRef = useRef();
     const [show, setShow] = useState(props?.show || false);
-    console.log("props", props);
     const [type, setType] = useState(props?.type || "text");
     // eslint-disable-next-line no-unused-vars
     const [field, meta, helpers] = useField(props);
