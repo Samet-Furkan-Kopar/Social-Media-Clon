@@ -21,7 +21,7 @@ const Login = () => {
     const location = useLocation();
     const ref = useRef();
     const user = useSelector((state) => state.auth.user);
-
+console.log(user) ;
     // const schema = yup.object({
     //     username: yup.string().required("Email Formatı Uygun Değil"),
     //     password: yup.string().required("Şifre gerekli*"),
@@ -64,7 +64,7 @@ const Login = () => {
         console.log(response, "response");
         if (response) {
             setTimeout(() => {
-                navigate(location.state?.return_url || "/", { replace: true });
+                navigate( `/inbox`, { replace: true });
             }, 2000);
         }
     };

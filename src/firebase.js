@@ -24,12 +24,13 @@ import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
 //     appId: "1:445308517639:web:432b7a58b9a6bb32c6d9a2",
 // };
 const firebaseConfig = {
-    apiKey: "AIzaSyCBsvc2HkQjUA8BK8GHDgzcYpLfvLnY7SI",
-    authDomain: "instagram-8e27d.firebaseapp.com",
-    projectId: "instagram-8e27d",
-    storageBucket: "instagram-8e27d.appspot.com",
-    messagingSenderId: "181403558043",
-    appId: "1:181403558043:web:92b761130e4f524b77663e",
+    
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_APP_ID,
 };
 
 // Initialize Firebase
@@ -42,7 +43,6 @@ const db = getFirestore(app);
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const dbUser = await getDoc(doc(db, "users", user.uid));
-        console.log(dbUser,"wwwww");
         let data = {
             uid: user.uid,
             full_name: user.displayName,
