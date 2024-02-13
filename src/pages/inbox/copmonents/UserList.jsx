@@ -3,7 +3,6 @@ import { NavLink,useParams } from "react-router-dom";
 
 const UserList = () => {
     const {conversationId} = useParams()
-    console.log(typeof +conversationId);
     const users = [
         {
             id: 1,

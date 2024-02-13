@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import UserList from "./UserList"
 const SideBar = () => {
     const user = useSelector((state) => state.auth.user);
-    console.log(user)
     return (
         <aside className="w-[349px] flex-shrink-0 border-r border-gray-300">
             <header className="h-[60px] border-b border-gray-300 flex items-center justify-between px-5">

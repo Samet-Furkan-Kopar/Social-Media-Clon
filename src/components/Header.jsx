@@ -10,7 +10,7 @@ import { IoMdExit } from "react-icons/io";
 
 const Header = () => {
     const user = useSelector((state) => state.auth.user);
-console.log(user);
+// console.log(user);
     return (
         <header className="bg-white border-b border-gray-300">
             <div className="h-[60px] flex items-center justify-between container mx-auto">

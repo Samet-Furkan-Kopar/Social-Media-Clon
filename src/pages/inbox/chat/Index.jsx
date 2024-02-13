@@ -2,7 +2,9 @@ import Header from "./components/Header";
 import Reply from "./Reply";
 import Messages from "./components/Messages";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 const Chat = () => {
+const data = useSelector((state) => state.auth.user);
     const user = {
         name: "Samet Furkan",
         avatar: "https://w7.pngwing.com/pngs/841/222/png-transparent-avatar-boy-max-avatar-vol-2-icon.png",
@@ -10,9 +12,9 @@ const Chat = () => {
     const [messages, setMessages] = useState([
         {
             from: {
-                id: "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
+                id: data ? data?.uid : "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
                 name: "Furkan",
-                username: "samettkopar",
+                username: "sametkopar",
                 avatar: "https://w7.pngwing.com/pngs/841/222/png-transparent-avatar-boy-max-avatar-vol-2-icon.png",
             },
             message: "naberawdawdawdawdawdadawd",
@@ -28,9 +30,9 @@ const Chat = () => {
         },
         {
             from: {
-                id: "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
+                id: data ? data?.uid : "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
                 name: "Furkan",
-                username: "samettkopar",
+                username: "sametkopar",
                 avatar: "https://w7.pngwing.com/pngs/841/222/png-transparent-avatar-boy-max-avatar-vol-2-icon.png",
             },
             message: "naberawdaw awdawdawddawd awdawdadawd",
@@ -47,9 +49,9 @@ const Chat = () => {
         },
         {
             from: {
-                id: "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
+                id: data ? data?.uid : "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
                 name: "Furkan",
-                username: "samettkopar",
+                username: "sametkopar",
                 avatar: "https://w7.pngwing.com/pngs/841/222/png-transparent-avatar-boy-max-avatar-vol-2-icon.png",
             },
             message: "nabselam a a  f aw ad wdawdadawd",
@@ -66,9 +68,9 @@ const Chat = () => {
         },
         {
             from: {
-                id: "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
+                id: data ? data?.uid : "T9LnxKl7b7RQY2im2LJDPiJp7Ru1",
                 name: "Furkan",
-                username: "samettkopar",
+                username: "sametkopar",
                 avatar: "https://w7.pngwing.com/pngs/841/222/png-transparent-avatar-boy-max-avatar-vol-2-icon.png",
             },
             message: "nabselawdawdawdawdm a a  f aw ad wdawdadawd",

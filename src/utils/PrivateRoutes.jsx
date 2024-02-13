@@ -3,7 +3,6 @@ import { Navigate, useLocation, useOutlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 export default function PrivateRoutes() {
     const user = useSelector((state) => state.auth.user);
-    console.log("user", user); 
     const location = useLocation(); 
     const outlet = useOutlet();
  

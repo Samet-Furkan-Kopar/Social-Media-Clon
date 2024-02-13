@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Deneme from "./pages/Deneme";
@@ -19,7 +19,7 @@ import Chat from "./pages/inbox/chat/Index";
 const App = () => {
     const [redirect, setRedirect] = useState(true);
     const user = useSelector((state) => state.auth.user);
-    console.log(user);
+    // console.log(user);
     useEffect(() => {
         let timeOut = setTimeout(() => {
             setRedirect(false);

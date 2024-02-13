@@ -18,8 +18,8 @@ const Profile = () => {
                 setUser(data);
             })
             .catch((err) => {
-                console.log(err);
                 setUser(false);
+                console.log(err);
               
             });
     }, []);

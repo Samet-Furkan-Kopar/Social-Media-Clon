@@ -40,6 +40,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 // eslint-disable-next-line no-unused-vars
 const db = getFirestore(app);
+
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const dbUser = await getDoc(doc(db, "users", user.uid));
@@ -62,11 +63,28 @@ onAuthStateChanged(auth, async (user) => {
 export const login = async (email, password) => {
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
-        return response;
+        const userUid = response.user.uid;
+        const userDoc = await getDoc(doc(db, "users", userUid));
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            userHandle(userData);
+            return { user: userData };
+        } else {
+            return { error: "Kullanıcı bulunamadı" };
+        }
     } catch (error) {
         toast.error(error.code);
+        return { error: error.code };
     }
 };
+// export const login = async (email, password) => {
+//     try {
+//         const response = await signInWithEmailAndPassword(auth, email, password);
+//         return response;
+//     } catch (error) {
+//         toast.error(error.code);
+//     }
+// };
 
 // eslint-disable-next-line no-unused-vars
 export const register = async ({ email, password, full_name, username }) => {
@@ -74,6 +92,7 @@ export const register = async ({ email, password, full_name, username }) => {
         const user = await getDoc(doc(db, "usernames", username));
         if (user.exists()) {
             toast.error("Username already taken");
+            return false;
         } else {
             const response = await createUserWithEmailAndPassword(auth, email, password);
             if (response?.user) {
@@ -98,12 +117,13 @@ export const register = async ({ email, password, full_name, username }) => {
         }
     } catch (error) {
         toast.error(error.code);
-        throw new Error(error);
+        return false
+        
     }
 };
 export const logout = async () => {
     try {
-        console.log("logout");
+        // console.log("logout");
         await signOut(auth);
         clearState();
     } catch (error) {
@@ -112,9 +132,9 @@ export const logout = async () => {
 };
 
 export const getUserInfo = async (name) => {
-    console.log(name, "name");
+    // console.log(name, "name");
     const username = await getDoc(doc(db, "usernames", name));
-    console.log(username, "username");
+    // console.log(username, "username");
     if(username.exists()){
         return (await getDoc(doc(db, "users", username.data().user_id))).data();
     }

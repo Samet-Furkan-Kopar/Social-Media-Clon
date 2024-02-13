@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 // eslint-disable-next-line react/prop-types
 const Message = ({ message }) => {
     const user = useSelector((state) => state.auth.user);
-    console.log(user);
     return (
         <div
             className={classNames({

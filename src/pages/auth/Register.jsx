@@ -22,25 +22,23 @@ const Register = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [loading, setLoading] = useState(false);
-    console.log(loading, "loading");
 
     const submitHandle = async (values) => {
         setLoading(true);
+
         //validatei ekle formiğe orası hatalı
         // dispatch(userActions.setUser({userName}));
         const response = await register(values);
-        console.log(response, "response");
         if (response) {
-            
-            console.log("response", response);
             setTimeout(() => {
                 setLoading(false);
                 navigate("/inbox", { replace: true });
             }, 3000);
+        } else {
+            setLoading(false);
         }
     };
-  return (
-    
+    return (
         <>
             {loading ? (
                 <Loader />
@@ -51,7 +49,11 @@ const Register = () => {
                     </Helmet>
                     <div className=" bg-white border p-[40px] pt-8 pb-6">
                         <a className="flex justify-center mb-8" href="">
-                            <img className="h-[51px]" src="/images/instagramlogin.png" alt="Instagram Login" />
+                            <img
+                                className="h-[51px]"
+                                src="/images/instagramlogin.png"
+                                alt="Instagram Login"
+                            />
                         </a>
                         <p className="text-[17px] text-center text-[#8e8e8e] mb-6">
                             Sign up to see photos and videos from your friends.
@@ -61,7 +63,7 @@ const Register = () => {
                             Log in with Facebook
                         </Button>
                         <Seperator label="OR" />
-    
+
                         <Formik
                             initialValues={{ username: "", password: "", email: "", full_name: "" }}
                             onSubmit={submitHandle}
@@ -97,7 +99,10 @@ const Register = () => {
                                         label={" Password"}
                                         name="password"
                                     />
-                                    <Button disabled={isSubmitting || !isValid || !dirty} type="submit">
+                                    <Button
+                                        disabled={isSubmitting || !isValid || !dirty}
+                                        type="submit"
+                                    >
                                         Sign Up
                                     </Button>
                                 </Form>
@@ -113,9 +118,9 @@ const Register = () => {
                 </div>
             )}
         </>
-    );    
+    );
     // return (
-         
+
     //         <div className="w-[350px] grid gap-y-3">
     //             <Helmet>
     //                 <title>Sign Up • Instagram</title>
@@ -182,7 +187,7 @@ const Register = () => {
     //                 </Link>
     //             </div>
     //         </div>
-        
+
     // );
 };
 

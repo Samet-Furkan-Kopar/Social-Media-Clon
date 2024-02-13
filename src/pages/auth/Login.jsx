@@ -21,20 +21,16 @@ const Login = () => {
     const location = useLocation();
     const ref = useRef();
     const user = useSelector((state) => state.auth.user);
-console.log(user) ;
     // const schema = yup.object({
     //     username: yup.string().required("Email Formatı Uygun Değil"),
     //     password: yup.string().required("Şifre gerekli*"),
     // });
     useEffect(() => {
-        if (user && user?.data !== null && user !==null) {
-            // Kullanıcı mevcut ve kullanıcı verisi null değilse, yönlendir
-            navigate("/", { replace: true });
-        } 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-   
-   
+        if (user?.data !== null && user !== null) {
+            navigate("/inbox", { replace: true });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     useEffect(() => {
         let images = ref.current.querySelectorAll("img"),
@@ -58,13 +54,12 @@ console.log(user) ;
     }, [ref]);
 
     const submitHandle = async (values) => {
-        //validatei ekle formiğe orası hatalı
-        // dispatch(userActions.setUser({userName}));
+        
+
         const response = await login(values?.username, values?.password);
-        console.log(response, "response");
         if (response) {
             setTimeout(() => {
-                navigate( `/inbox`, { replace: true });
+                navigate(`/inbox`, { replace: true });
             }, 2000);
         }
     };

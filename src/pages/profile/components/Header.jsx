@@ -2,7 +2,6 @@
 
 
 const Header = ({user}) => {
-  console.log(user && user);
   return (
     <header className="flex items-center justify-center mt-6 px-24 gap-x-24 py-4">
       <img src={"/images/avatar.jpg"} className="w-[150px] h-[150px] rounded-full"/>
